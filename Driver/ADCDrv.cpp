@@ -126,15 +126,18 @@ void 	Class_ADDrv::Drv_ADInit(void)
 	AdcaRegs.ADCSOC3CTL.bit.CHSEL = 3;
 	AdcaRegs.ADCSOC4CTL.bit.CHSEL = 4;
 	AdcaRegs.ADCSOC5CTL.bit.CHSEL = 5;
+	
 	AdcbRegs.ADCSOC0CTL.bit.CHSEL = 0;
 	AdcbRegs.ADCSOC1CTL.bit.CHSEL = 1;
 	AdcbRegs.ADCSOC2CTL.bit.CHSEL = 2;
 	AdcbRegs.ADCSOC3CTL.bit.CHSEL = 3;
-	AdccRegs.ADCSOC0CTL.bit.CHSEL = 14;
-	AdccRegs.ADCSOC1CTL.bit.CHSEL = 15;
+	AdcbRegs.ADCSOC0CTL.bit.CHSEL = 14;
+	AdcbRegs.ADCSOC1CTL.bit.CHSEL = 15;
+	
 	AdccRegs.ADCSOC2CTL.bit.CHSEL = 2;
 	AdccRegs.ADCSOC3CTL.bit.CHSEL = 3;
 	AdccRegs.ADCSOC4CTL.bit.CHSEL = 4;
+	
 	AdcdRegs.ADCSOC0CTL.bit.CHSEL = 0;
 	AdcdRegs.ADCSOC1CTL.bit.CHSEL = 1;
 	AdcdRegs.ADCSOC2CTL.bit.CHSEL = 2;
@@ -294,6 +297,7 @@ void Class_ADDrv::CalAdcINL(Uint16 adc)
 
 void 	Class_ADDrv::Drv_Int_Sampling1Data(void)
 {
+    UINT i, j;
 
 	//
     //wait for ADCA-SOCD to complete, then acknowledge flag
@@ -323,11 +327,13 @@ void 	Class_ADDrv::Drv_Int_Sampling1Data(void)
 	m_i16ADC_Vinvc_0 = AdcbResultRegs.ADCRESULT2;
 	
 	m_i16ADC_Vbpa_0 = AdcbResultRegs.ADCRESULT3;
-	m_i16ADC_Vbpb_0 = AdccResultRegs.ADCRESULT0;
-	m_i16ADC_Vbpc_0 = AdccResultRegs.ADCRESULT1;
+	m_i16ADC_Vbpb_0 = AdcbResultRegs.ADCRESULT4;
+	m_i16ADC_Vbpc_0 = AdcbResultRegs.ADCRESULT5;
 	
-	m_i16ADC_VbusP_0 = AdcdResultRegs.ADCRESULT3;
-	m_i16ADC_VbusN_0 = AdcdResultRegs.ADCRESULT4;
+	//receive Vbus Data from Rec,
+	objIPC.Drv_IPC_ADSample_Receive(i, j);
+	m_i16ADC_VbusP_0 = (INT16)i;
+	m_i16ADC_VbusN_0 = (INT16)j;
 
 	m_i16ADC_Ila_0 = (((INT32)m_i16ADCSlope)*(m_i16ADC_Ila_0-m_unAdIlaMid.half.hword))>>12;
 	m_i16ADC_Ilb_0 = (((INT32)m_i16ADCSlope)*(m_i16ADC_Ilb_0-m_unAdIlbMid.half.hword))>>12;
@@ -366,7 +372,7 @@ void 	Class_ADDrv::Drv_Int_Sampling1Data(void)
 
 void 	Class_ADDrv::Drv_Int_Sampling2Data(void)
 {	
-
+    UINT i, j, k;
     //
     //wait for ADCA-SOCD to complete, then acknowledge flag
     //
@@ -395,6 +401,15 @@ void 	Class_ADDrv::Drv_Int_Sampling2Data(void)
 	m_i16ADC_Voutc_0 = AdcbResultRegs.ADCRESULT2;
 	
 	m_i16ADC_IgbtTemp = AdcdResultRegs.ADCRESULT4;
+
+	m_i16ADC_Vina_0 = AdcbResultRegs.ADCRESULT3;
+	m_i16ADC_Vinb_0 = AdcbResultRegs.ADCRESULT4;
+	m_i16ADC_Vinc_0 = AdcbResultRegs.ADCRESULT5;
+	//refresh Vin Data,and transmit to REC
+	i = (UINT16)m_i16ADC_Vina_0;
+	j = (UINT16)m_i16ADC_Vinb_0;
+	k = (UINT16)m_i16ADC_Vinc_0;
+	objIPC.Drv_IPC_ADSample_Transmit(i, j, k);
 	
 	m_i16ADC_IlaFilter_0 = (((INT32)m_i16ADCSlope)*(m_i16ADC_IlaFilter_0-m_unAdIlaFilterMid.half.hword))>>12;
 	m_i16ADC_IlbFilter_0 = (((INT32)m_i16ADCSlope)*(m_i16ADC_IlbFilter_0-m_unAdIlbFilterMid.half.hword))>>12;

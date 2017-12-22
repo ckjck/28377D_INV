@@ -6,9 +6,9 @@
 /*=======================================================*/	
 
 
-extern UINT16 Epwm1FuncsLoadStart;
-extern UINT16 Epwm1FuncsLoadEnd;
-extern UINT16 Epwm1FuncsRunStart;
+//extern UINT16 Epwm1FuncsLoadStart;
+//extern UINT16 Epwm1FuncsLoadEnd;
+//extern UINT16 Epwm1FuncsRunStart;
 
 
 
@@ -41,7 +41,7 @@ extern UINT16 Epwm1FuncsRunStart;
 	
 		objRAMDrv.Drv_MemCheck();
 		
-		objRAMDrv.Drv_MemCopy(&Epwm1FuncsLoadStart, &Epwm1FuncsLoadEnd, &Epwm1FuncsRunStart);
+	//	objRAMDrv.Drv_MemCopy(&Epwm1FuncsLoadStart, &Epwm1FuncsLoadEnd, &Epwm1FuncsRunStart);
 
 		
 

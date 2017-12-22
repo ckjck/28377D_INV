@@ -16,7 +16,7 @@ extern UINT16 Epwm1FuncsRunStart;
 interrupt void EPWM1_INT_ISR(void)
 {
     //GpioDataRegs.GPBSET.bit.GPIO34 = 1;
-	INT16	i16IntCount_0;
+	static INT16	i16_IntCnt_0;
 	volatile	INT16   i16IntTemp_0;
 
     	EPwm1Regs.ETCLR.bit.INT = 1;                    // Clear INT flag for this timer

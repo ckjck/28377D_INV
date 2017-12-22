@@ -151,6 +151,24 @@ void	Class_RAMDrv::Drv_MemCheck()
 
 }
 
+void	Class_RAMDrv::Drv_MemCheckMaster(void)
+{	
+	MemCfgRegs.DxINIT.all = 0x000F;
+	MemCfgRegs.LSxINIT.all = 0x003F;
+	MemCfgRegs.GSxINIT.all = 0xFFFF;
+	MemCfgRegs.MSGxINIT.all = 0x0007;
+	while((MemCfgRegs.DxINITDONE.all != 0x0F) || (MemCfgRegs.LSxINITDONE.all != 0x003f)||
+		  (MemCfgRegs.GSxINITDONE.all != 0xFFFF) || (MemCfgRegs.MSGxINITDONE.all != 0x0007))
+	{
+		//zqf 070111--Limp mode时CPU时钟为1-5MHz，取典型值3MHz
+		objTimerDrv.Drv_usDelay(2000000);  	//2000000*0.5us=1s, LED闪烁
+		GpioDataRegs.GPBTOGGLE.bit.GPIO40 = 1;
+
+	}	 	
+			
+}
+
+
 //-----------------------------------
 void 	Class_RAMDrv::Drv_MemCopy(UINT16 *SourceAddr, UINT16* SourceEndAddr, UINT16* DestAddr)
 {

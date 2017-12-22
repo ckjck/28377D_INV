@@ -7,7 +7,7 @@
 	<deviceEndianness value="little"/>
 	<codegenToolVersion value="16.9.5.LTS"/>
 	<isElfFormat value="false"/>
-	<connection value="common/targetdb/connections/TIXDS100v3_Dot7_Connection.xml"/>
+	<connection value="common/targetdb/connections/TIXDS100v2_Connection.xml"/>
 	<linkerCommandFile value="2837x_FLASH_lnk_cpu1.cmd"/>
 	<rts value="libc.a"/>
 	<createSlaveProjects value=""/>

@@ -3,7 +3,8 @@
 /* Description	: 	Data types definition					*/
 /* Date			:	Dec.2005								*/
 /*==========================================================*/
-
+#ifndef TYPES_H_
+#define TYPES_H_
 //  480V代码的F2808平台移植第一次检视会议（051202）决定：
 //  整流、逆变自定义的变量采用以下统一类型
 
@@ -26,7 +27,7 @@
 		}			half;
 	}UNLONG;											//变量名加前缀un_
 
-#define T_MAX 10
+    #define T_MAX 10
 	typedef struct
 	{
 		int num ;
@@ -35,3 +36,4 @@
 		int flags[T_MAX];
 	} FLAG_TABLE;
 
+#endif

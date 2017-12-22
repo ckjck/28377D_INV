@@ -13,7 +13,7 @@ class Class_RAMDrv
 	public:
 		void 	Drv_MemCheck(void);
 		void 	Drv_MemCopy(UINT16 *SourceAddr, UINT16 *SourceEndAddr, UINT16 *DestAddr);
-		
+		void	Drv_MemCheckMaster(void);
 	};
 	
 #endif

@@ -19,9 +19,25 @@
 #define SYS_CAN_HAL_H
 
 //Private Enumerated and Structure Definitions
+
+#define MAIL_BOX1 1
+#define MAIL_BOX2 2
+#define MAIL_BOX3 3
 #define MAIL_BOX4 4
 #define MAIL_BOX5 5
-#define MAIL_BOX1 1
+#define MAIL_BOX6 6
+#define MAIL_BOX7 7
+#define MAIL_BOX8 8
+#define MAIL_BOX9 9
+#define MAIL_BOX10 10
+#define MAIL_BOX11 11
+#define MAIL_BOX12 12
+#define MAIL_BOX13 13
+#define MAIL_BOX14 14
+#define MAIL_BOX15 15
+
+
+
 
 //-----------------------------------------------------------------------------
 //Macro definition and enum
@@ -155,76 +171,6 @@ typedef struct Can_Frame
 } SYS_CAN_FRAME;
 
 
-/* --------------------------------------------------- */
-/* eCAN Mailbox Registers                               */
-/* ----------------------------------------------------*/
-
-/* eCAN Message Data Register low (MDR_L) word definitions */
-struct  CANMDL_WORDS {      // bits  description
-   Uint16      LOW_WORD:16; // 0:15  
-   Uint16      HI_WORD:16;  // 31:16  
-};
-
-/* eCAN Message Data Register low (MDR_L) byte definitions */
-struct  CANMDL_BYTES {      // bits   description
-   Uint16      BYTE3:8;     // 31:24
-   Uint16      BYTE2:8;     // 23:16
-   Uint16      BYTE1:8;     // 15:8
-   Uint16      BYTE0:8;     // 7:0             
-};
-
-
-/* Allow access to the bit fields or entire register */ 
-
-union CANMDL_REG {
-   Uint32                all;
-   struct CANMDL_WORDS   word;
-   struct CANMDL_BYTES   byte;      
-};
-
-
-
-/* eCAN Message Data Register high  (MDR_H) word definitions */
-struct  CANMDH_WORDS {         // bits  description
-   Uint16      LOW_WORD:16;    // 0:15  
-   Uint16      HI_WORD:16;     // 31:16  
-};
-
-/* eCAN Message Data Register low (MDR_H) byte definitions */
-struct  CANMDH_BYTES {      // bits   description
-   Uint16      BYTE7:8;     // 63:56 
-   Uint16      BYTE6:8;     // 55:48
-   Uint16      BYTE5:8;     // 47:40    
-   Uint16      BYTE4:8;     // 39:32    
-};
-
-/* Allow access to the bit fields or entire register */ 
-union CANMDH_REG {
-   Uint32                  all;
-   struct CANMDH_WORDS     word;
-   struct CANMDH_BYTES     byte;
-};
-
-struct DATA{
-	union CANMDL_REG       MDL;
-   	union CANMDH_REG       MDH;
-};
-struct MBOX {
-	//! The CAN message identifier used for 11 or 29 bit identifiers.
-	uint32_t ui32MsgID;
-	
-	//! The message identifier mask used when identifier filtering is enabled.
-	uint32_t ui32MsgIDMask;
-	
-	//! This value holds various status flags and settings specified by
-	//! tCANObjFlags.
-	uint32_t ui32Flags;
-	
-	//! This value is the number of bytes of data in the message object.
-	uint32_t ui32MsgLen;
-
-	struct	DATA	DATA;
-};
 
 
 //------------------------------------------------------------------------------

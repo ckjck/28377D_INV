@@ -39,8 +39,9 @@
 	//the buffer used to save received msg
 	SYS_CAN_FRAME ReceiveFrame;
 
-	tCANMsgObject sTXCANMessage;
-	tCANMsgObject sRXCANMessage;
+		
+//	tCANMsgObject sTXCANMessage;
+//	tCANMsgObject sRXCANMessage;
 
 
 //--------------------------------------------------------------------------------
@@ -82,12 +83,12 @@ Return Value:
 Precondition:
 Postcondition:
 ***************************************************************************************/
-VOID CanMailBoxRead(OUT SYS_CAN_FRAME *pDesFrame, IN tCANMsgObject *pSourceMailBox)
+VOID CanMailBoxRead(OUT SYS_CAN_FRAME * const pDesFrame, IN tCANMsgObject * const pSourceMailBox)
 {
-	UINT16 * ChartoWords = (UINT16 *)(pSourceMailBox->pucMsgData);
+	UINT16 * ChartoWords = (UINT16 *)&(pSourceMailBox->pucMsgData);
 
-	pDesFrame->CANId = (UINT16)pSourceMailBox->ui32MsgID;
-	pDesFrame->CANDlc = (UINT16)pSourceMailBox->ui32MsgLen;
+	pDesFrame->CANId = (UINT16)(pSourceMailBox->ui32MsgID);
+	pDesFrame->CANDlc = (UINT16)(pSourceMailBox->ui32MsgLen);
 
 	pDesFrame->CANDataHead = *ChartoWords;
 	pDesFrame->CANData1 = *(ChartoWords+1);
@@ -104,7 +105,7 @@ Return Value:
 Precondition:
 Postcondition:
 *************************************************************************************/
-VOID CanMailBoxWrite(IN const UINT32 &MailBoxID, IN SYS_CAN_FRAME *pSourceFrame)
+VOID CanMailBoxWrite(IN const UINT32 MailBoxID, IN SYS_CAN_FRAME * const pSourceFrame)
 {
 	sTXCANMessage.ui32MsgID = (UINT32)(pSourceFrame->CANId);
 	//The message identifier mask used when identifier filtering is enabled
@@ -172,7 +173,7 @@ Return Value:		undefinition
 Precondition:
 Postcondition:
 *******************************************************************************/
-INT16 SysCanSendData(IN SYS_CAN_FRAME *pSendFrame)
+INT16 SysCanSendData(IN SYS_CAN_FRAME * const pSendFrame)
 {
 	CanMailBoxWrite(MAIL_BOX1, pSendFrame);
 
@@ -188,11 +189,11 @@ Return Value:
 Precondition:
 Postcondition:
 ********************************************************************************/
-volatile UINT32 g_bErrFlag = 0;
+
 
 interrupt void ECAN0INTA_ISR(VOID)
 {
-
+	static UINT32 g_bErrFlag = 0;
 	UINT32	Mbox_ID;
 	UINT32	ulStatus;
 
@@ -206,12 +207,14 @@ interrupt void ECAN0INTA_ISR(VOID)
 	Mbox_ID = objCANDrv.CANIntStatus(CANA_BASE, CAN_INT_STS_CAUSE);
 	switch(Mbox_ID)
 		{
-			case MAIL_BOX1:
+			case MAIL_BOX1:	//INV message Transmit
 
 				ProtocolObj.SysCanXmitFcb(NULL);
 				objCANDrv.CANIntClear(CANA_BASE, MAIL_BOX1);
 				break;
-
+			case MAIL_BOX2:	//REC message transmit
+				objIPC.Dat_CPU2toCanBus(IPC_STS_IPC1, IPC_STS_IPC2, IPCSENDCOM_CANDATA, IPCSENDADDR_CANDATA, IPCSENDDATA_CANDATA);
+				objCANDrv.CANIntClear(CANA_BASE, MAIL_BOX2);
 			case MAIL_BOX5:
 
 				//fetch message from mailbox.
@@ -264,6 +267,7 @@ interrupt void ECAN0INTA_ISR(VOID)
             		// Set a flag to indicate some errors may have occurred.
             		//
             		g_bErrFlag = 1;
+					if(g_bErrFlag)
 					asm("   ESTOP0");
         		}
 				break;

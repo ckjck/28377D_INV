@@ -155,6 +155,10 @@ class Class_ADDrv
 //	    INT16			m_i16ADC_IgbtTemp
 //	    INT16			m_i16ADC_
 //	    INT16			m_i16ADC_
+		INT16			m_i16ADC_Vina_0;
+		INT16			m_i16ADC_Vinb_0;
+		INT16			m_i16ADC_Vinc_0;
+
 
 		void			AdcSetMode(Uint16 adc, Uint16 resolution, Uint16 signalmode);
 		void			CalAdcINL(Uint16 adc);
@@ -175,6 +179,7 @@ class Class_ADDrv
 	friend	class			Class_Output;
 	friend	class			Class_Inverter;
 	friend	class			Class_Debug;
+	friend	class			Class_IPC;
 		
 	};
 	

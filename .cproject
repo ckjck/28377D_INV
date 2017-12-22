@@ -49,6 +49,8 @@
 								<option id="com.ti.ccstudio.buildDefinitions.C2000_16.9.compilerID.DEFINE.1713233337" name="Pre-define NAME (--define, -D)" superClass="com.ti.ccstudio.buildDefinitions.C2000_16.9.compilerID.DEFINE" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="CPU1"/>
 								</option>
+								<option id="com.ti.ccstudio.buildDefinitions.C2000_16.9.compilerID.ADVICE__PERFORMANCE.1426698034" name="Provide advice on optimization techniques (--advice:performance)" superClass="com.ti.ccstudio.buildDefinitions.C2000_16.9.compilerID.ADVICE__PERFORMANCE" value="--advice:performance=all" valueType="string"/>
+								<option id="com.ti.ccstudio.buildDefinitions.C2000_16.9.compilerID.OPT_LEVEL.173027482" name="Optimization level (--opt_level, -O)" superClass="com.ti.ccstudio.buildDefinitions.C2000_16.9.compilerID.OPT_LEVEL" value="com.ti.ccstudio.buildDefinitions.C2000_16.9.compilerID.OPT_LEVEL.2" valueType="enumerated"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.C2000_16.9.compiler.inputType__C_SRCS.1098927036" name="C Sources" superClass="com.ti.ccstudio.buildDefinitions.C2000_16.9.compiler.inputType__C_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.C2000_16.9.compiler.inputType__CPP_SRCS.812720321" name="C++ Sources" superClass="com.ti.ccstudio.buildDefinitions.C2000_16.9.compiler.inputType__CPP_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.C2000_16.9.compiler.inputType__ASM_SRCS.1672306812" name="Assembly Sources" superClass="com.ti.ccstudio.buildDefinitions.C2000_16.9.compiler.inputType__ASM_SRCS"/>
@@ -76,7 +78,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="App/Class/Transfer.cpp|App/Class/System.cpp|App/Class/SysCanProtocol.cpp|App/Class/SysCanParallelHandle.cpp|App/Class/SysCanHal.cpp|App/Class/SysCanDataExchg.cpp|App/Class/SysCanApp.cpp|App/Class/Switches.cpp|App/Class/Service.cpp|App/Class/SelfAgingAlgorithm.cpp|App/Class/PowCANScheduler.cpp|App/Class/PowCANProtocol.cpp|App/Class/Parallel.cpp|App/Class/Output.cpp|App/Class/MonitorInterface.cpp|App/Class/Load.cpp|App/Class/LBS.cpp|App/Class/InverterControl.cpp|App/Class/InverterAlgorithm.cpp|App/Class/Inverter.cpp|App/Class/FlashUpdate.cpp|App/Class/FaultRecord.cpp|App/Class/EEPROM.cpp|App/Class/DigitalIO.cpp|App/Class/Debug.cpp|App/Class/DCBus.cpp|App/Class/Bypass.cpp|App/Vector.cpp|App/PubFuncs.cpp|App/Main.cpp|App/CntrISR.cpp|Driver/include/F2837xD_GlobalVariableDefs.cpp|Driver/WatchDogDrv.cpp|Driver/TimerDrv.cpp|Driver/SysDrv.cpp|Driver/SPIDrv.cpp|Driver/SCIDrv.cpp|Driver/RAMDrv.cpp|Driver/PWMDrv.cpp|Driver/I2CDrv.cpp|Driver/GPIODrv.cpp|Driver/FlashDrv.cpp|Driver/Drivers.cpp|Driver/CAPDrv.cpp|Driver/CANDrv.cpp|Driver/ADCDrv.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="Driver/IPC_rec.cpp|Driver/IPC.cpp|28377D_INV.si4project|DSP2837xD_CodeStartBranch.asm|TMS320F28377D_cpu02.cmd|Driver/SysDrv.cpp|App/Class/Transfer.cpp|App/Class/System.cpp|App/Class/SysCanProtocol.cpp|App/Class/SysCanParallelHandle.cpp|App/Class/SysCanHal.cpp|App/Class/SysCanDataExchg.cpp|App/Class/SysCanApp.cpp|App/Class/Switches.cpp|App/Class/Service.cpp|App/Class/SelfAgingAlgorithm.cpp|App/Class/PowCANScheduler.cpp|App/Class/PowCANProtocol.cpp|App/Class/Parallel.cpp|App/Class/Output.cpp|App/Class/MonitorInterface.cpp|App/Class/Load.cpp|App/Class/LBS.cpp|App/Class/InverterControl.cpp|App/Class/InverterAlgorithm.cpp|App/Class/Inverter.cpp|App/Class/FlashUpdate.cpp|App/Class/FaultRecord.cpp|App/Class/EEPROM.cpp|App/Class/DigitalIO.cpp|App/Class/Debug.cpp|App/Class/DCBus.cpp|App/Class/Bypass.cpp|App/Vector.cpp|App/PubFuncs.cpp|App/Main.cpp|App/CntrISR.cpp|Driver/include/F2837xD_GlobalVariableDefs.cpp|Driver/WatchDogDrv.cpp|Driver/TimerDrv.cpp|Driver/SPIDrv.cpp|Driver/SCIDrv.cpp|Driver/RAMDrv.cpp|Driver/PWMDrv.cpp|Driver/I2CDrv.cpp|Driver/GPIODrv.cpp|Driver/FlashDrv.cpp|Driver/Drivers.cpp|Driver/CAPDrv.cpp|Driver/CANDrv.cpp|Driver/ADCDrv.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -171,4 +173,5 @@
 			<content-type-mapping configuration="" content-type="org.eclipse.cdt.core.cxxSource" language="com.ti.ccstudio.core.TIGPPLanguage"/>
 		</project-mappings>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>

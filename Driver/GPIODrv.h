@@ -296,13 +296,11 @@
 class Class_GPIODrv
 {
 	private:		
-		void	CPUSELConfig(void);
 		
 	public:
 		void 	Drv_GPIOInit(void);
 		void	Drv_Int_ADCh1Cs(void);
 		void	Drv_Int_ADCh2Cs(void);
-		void	Drv_CPUSELConfig(void);
 
 };
 	

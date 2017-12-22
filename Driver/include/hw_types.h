@@ -28,6 +28,8 @@ typedef int16_t int8_t;
 // Macros for hardware access, both direct and via the bit-band region.
 //
 //*****************************************************************************
+#define HWRE(x) ((uint16_t *)(x))
+
 #define HWREG(x)                                                              \
         (*((volatile uint32_t *)(x)))
 #define HWREGH(x)                                                             \

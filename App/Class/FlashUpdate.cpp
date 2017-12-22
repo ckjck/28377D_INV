@@ -1309,7 +1309,7 @@ UINT16 Class_FlashUpdate::App_Flash_CsmUnlock(void)
 {
 
 
-    
+    return 0;
 } 
 
 #pragma CODE_SECTION("Flash28_API");

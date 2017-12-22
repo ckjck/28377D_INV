@@ -4,7 +4,7 @@
 #include "..\Driver\include\Types.h"
 #include "Vector.h"
 #include "..\Driver\Drivers.h"
-
+#include "ECan.h"
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -55,6 +55,7 @@
 #include "Class\SysCanDataExchg.h"
 #include "Class\SysCanQueue.h"
 //-----
+#include "..\Driver\IPC.h"
 
 #include "..\Driver\include\F2837xD_GlobalVariableDefs.cpp"
 #include "..\Driver\Drivers.cpp"
@@ -73,7 +74,6 @@
 #include "..\Driver\FlashDrv.cpp"
 #include "PubFuncs.cpp"
 #include "..\Driver\TimerDrv.cpp"
-
 
 #include "vector.cpp"
 
@@ -115,6 +115,7 @@
 #include "Class\SysCanApp.cpp"
 #include "Class\SysCanDataExchg.cpp"
 
+#include "..\Driver\IPC.cpp"
 #include "Main.cpp"
 
 

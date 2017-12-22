@@ -29,6 +29,7 @@
  Class_TimerDrv objTimerDrv;
 
  Class_WatchDogDrv objWatchDogDrv;
+ Class_IPC		objIPC((CAN_PACKED_PROTOCOL_U*)0x03F800, (CAN_PACKED_PROTOCOL_U*)0x03FC00);
 
 //============================================================
 // End of file.

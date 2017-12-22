@@ -7,6 +7,9 @@
        
 #define     DIGITALIO_H
 
+
+
+
 		struct	structLocalSignal
 		{
 			UINT16	bBpSTS					:1;					//BIT00		旁路驱动		
@@ -200,7 +203,7 @@
 			}									BIT;
 		};															//SPI输入第四帧
 
-		
+
 class Class_DigitalIO
 	{
 	public:
@@ -213,6 +216,7 @@ class Class_DigitalIO
 		union		ExOutBReg			m_un_ExOutBReg;			//SPI第二组输出数据
 		union		ExOutCReg			m_un_ExOutCReg;			//SPI第三组输出数据
 
+		
 		union		ExInAReg			m_un_ExInAReg;			//SPI第一组输入数据
 		union		ExInBReg			m_un_ExInBReg;			//SPI第二组输入数据
 		union		ExInCReg			m_un_ExInCReg;			//SPI第三组输入数据
@@ -232,7 +236,8 @@ class Class_DigitalIO
 		INT16		m_i16IMCCtrlConfCnt;	//机架间离散信号控制确认计数器
 		UINT16		m_u16InvSCROffCnt;
 		UINT16		m_u16InvRunStatusCnt;
-	
+		
+
 	public:
 		void		App_DigitalIOVarInit(void);
 //		void		Dat_IoDeal(void);
@@ -243,6 +248,7 @@ class Class_DigitalIO
 		void		Dat_DigitalOutput(void);
 		INT16		Dat_InvIDOk(void);
 		void		App_IMCCtrl(void);	
+
 	};
 
 #endif

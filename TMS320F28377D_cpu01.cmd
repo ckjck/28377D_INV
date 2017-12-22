@@ -66,11 +66,11 @@ PAGE 1 : /* Data Memory */
     RAMGS3  : origin = 0x00F000, length = 0x001000
     RAMGS4  : origin = 0x010000, length = 0x001000
     RAMGS5  : origin = 0x011000, length = 0x001000
-    RAMGS6  : origin = 0x012000, length = 0x001000
-    RAMGS7  : origin = 0x013000, length = 0x001000
+    RAMGS6  : origin = 0x012000, length = 0x005000
+    /*RAMGS7  : origin = 0x013000, length = 0x001000
     RAMGS8  : origin = 0x014000, length = 0x001000
     RAMGS9  : origin = 0x015000, length = 0x001000
-    RAMGS10 : origin = 0x016000, length = 0x001000
+    RAMGS10 : origin = 0x016000, length = 0x001000*/
     RAMGS11 : origin = 0x017000, length = 0x001000
     RAMGS12 : origin = 0x018000, length = 0x001000
     RAMGS13 : origin = 0x019000, length = 0x001000
@@ -78,8 +78,10 @@ PAGE 1 : /* Data Memory */
     RAMGS15 : origin = 0x01B000, length = 0x001000
 
     /* Shared MessageRam */
-    CPU2TOCPU1RAM   : origin = 0x03F800, length = 0x000400
-    CPU1TOCPU2RAM   : origin = 0x03FC00, length = 0x000400
+    CPU2TOCANBUS	: origin = 0x03F800, length = 0x000007
+    CPU2TOCPU1RAM   : origin = 0x03F807, length = 0x0003F9
+    CANBUSTOCPU2	: origin = 0x03FC00, length = 0x000007
+    CPU1TOCPU2RAM   : origin = 0x03FC07, length = 0x0003F9
 }
 
 
@@ -113,9 +115,12 @@ SECTIONS
 
 
 
-    ShareRamCPU2Master		: > RAMGS0,		PAGE = 1
-    ShareRamCPU1Master      : > RAMGS1,		PAGE = 1
+    ShareRamCPU2Master	: > RAMGS0,		PAGE = 1
+    ShareRamCPU1Master  : > RAMGS1,		PAGE = 1
 
+	CanMsgRectoInv		: > CPU2TOCANBUS PAGE = 1
+	CanMsgInvtoRec		: > CANBUSTOCPU2 PAGE = 1
+	
     /* The following section definitions are required when using the IPC API Drivers */ 
     GROUP : > CPU1TOCPU2RAM, PAGE = 1 
     {
@@ -126,8 +131,8 @@ SECTIONS
     
     GROUP : > CPU2TOCPU1RAM, PAGE = 1
     {
-        GETBUFFER :    TYPE = DSECT
-        GETWRITEIDX :  TYPE = DSECT
-        PUTREADIDX :   TYPE = DSECT
+        GETBUFFER  :	TYPE = DSECT
+        GETWRITEIDX :	TYPE = DSECT
+        PUTREADIDX :	TYPE = DSECT
     }  
 }

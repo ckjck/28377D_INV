@@ -300,7 +300,7 @@ typedef unsigned long bp_32 __attribute__((byte_peripheral));
 #include "hw_memmap.h"
 #include "hw_types.h"
 #include "hw_ints.h"
-#include "debug.h"
+#include "debug2.h"
 #include "interrupt.h"
 #include "can.h"
 

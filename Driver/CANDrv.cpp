@@ -5,6 +5,10 @@
 /*==========================================================*/
 #include "CANDrv.h"
 
+
+tCANMsgObject sTXCANMessage;
+tCANMsgObject sRXCANMessage;
+
 /**********************************************************************************
 函数名：	Drv_CANInit()
 功能描述：	CAN模块初始化
@@ -12,19 +16,22 @@
 ***********************************************************************************/
 void	Class_CANDrv::Drv_CANInit()
 {
-	CANInit(CANA_BASE);
-  CANClkSourceSelect(CANA_BASE, 0);
-	CANBitRateSet(CANA_BASE, 200000000, 125000);
-	CANIntEnable(CANA_BASE, CAN_INT_MASTER|CAN_INT_ERROR|CAN_INT_STATUS);
-	CANEnable(CANA_BASE);
-	CANGlobalIntEnable(CANA_BASE, CAN_GLB_INT_CANINT0);
-	CANMessageSet(CANA_BASE, 2, &sRXCANMessage, MSG_OBJ_TYPE_RX);
+	this->CANInit(CANA_BASE);
+  	this->CANClkSourceSelect(CANA_BASE, 0);
+	this->CANBitRateSet(CANA_BASE, 200000000, 125000);
+	this->CANIntEnable(CANA_BASE, CAN_INT_MASTER|CAN_INT_ERROR|CAN_INT_STATUS);
+	this->CANEnable(CANA_BASE);
+	this->CANGlobalIntEnable(CANA_BASE, CAN_GLB_INT_CANINT0);
 
-	CANInit(CANB_BASE);
-	CANClkSourceSelect(CANB_BASE, 200000000, 125000);
-	CANBitRateSet(CANB_BASE,200000000, 125000);
-	CANEnable(CANB_BASE);
-	CANMessageSet(CANA_BASE, 2, &sRXCANMessage, MSG_OBJ_TYPE_RX);
+	// Set mailbox4 and mailbox5 to receive message
+	this->CANMessageSet(CANA_BASE, MAIL_BOX4|MAIL_BOX5, &sRXCANMessage, MSG_OBJ_TYPE_RX);
+
+
+	this->CANInit(CANB_BASE);
+	this->CANClkSourceSelect(CANB_BASE, 0);
+	this->CANBitRateSet(CANB_BASE, 200000000, 1000000);
+	this->CANEnable(CANB_BASE);
+	this->CANMessageSet(CANA_BASE, MAIL_BOX6|MAIL_BOX7|MAIL_BOX8|MAIL_BOX9, &sRXCANMessage, MSG_OBJ_TYPE_RX);
 }
 
  //*****************************************************************************
@@ -657,9 +664,11 @@ void	Class_CANDrv::Drv_CANInit()
  //! \return None.
  //
  //*****************************************************************************
+#if (0)
  void Class_CANDrv::CANIntRegister(uint32_t ui32Base, unsigned char ucIntNumber,
 				void (*pfnHandler)(void))
  {
+
 	 uint32_t ui32IntNumber;
 
 	 // Check the arguments.
@@ -673,6 +682,7 @@ void	Class_CANDrv::Drv_CANInit()
 
 	 // Enable the CAN interrupt.
 	 IntEnable(ui32IntNumber);
+
  }
 
  //*****************************************************************************
@@ -692,6 +702,7 @@ void	Class_CANDrv::Drv_CANInit()
  //*****************************************************************************
  void Class_CANDrv::CANIntUnregister(uint32_t ui32Base, unsigned char ucIntNumber)
  {
+
 	 uint32_t ui32IntNumber;
 
 	 // Check the arguments.
@@ -705,8 +716,9 @@ void	Class_CANDrv::Drv_CANInit()
 
 	 // Disable the CAN interrupt.
 	 IntDisable(ui32IntNumber);
- }
 
+ }
+#endif
  //*****************************************************************************
  //
  //! Enables individual CAN controller interrupt sources.

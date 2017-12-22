@@ -22,7 +22,7 @@ Uint16	Class_SysDrv::Drv_InitPll(Uint16 clock_source, Uint16 imult, Uint16 fmult
         //
         // Everything is set as required, so just return
         //
-        return;
+        return 0;
     }
 
     if(clock_source != ClkCfgRegs.CLKSRCCTL1.bit.OSCCLKSRCSEL)
@@ -221,6 +221,8 @@ Uint16	Class_SysDrv::Drv_InitPll(Uint16 clock_source, Uint16 imult, Uint16 fmult
     //
     ClkCfgRegs.SYSCLKDIVSEL.bit.PLLSYSCLKDIV = divsel;
     EDIS;
+
+    return 0;
 }
 /**********************************************************************************
 º¯ÊýÃû£º	Drv_InitSysCtrl()			
@@ -299,15 +301,23 @@ void	Class_SysDrv::Drv_InitSysCtrl(void)
 		//	PLLSYSCLK = (XTAL_OSC) * (IMULT + FMULT) / (PLLSYSCLKDIV)
 		//
 #ifdef _TMS320_F28377D
-	objSysDrv.Drv_InitPll(XTAL_OSC, IMULT_20, FMULT_0, PLLCLK_BY_2);
+		Drv_InitPll(XTAL_OSC, IMULT_20, FMULT_0, PLLCLK_BY_2);
 #else
-	objSysDrv.Drv_InitPll(XTAL_OSC, IMULT_10, FMULT_0, PLLCLK_BY_2);
+		Drv_InitPll(XTAL_OSC, IMULT_10, FMULT_0, PLLCLK_BY_2);
 #endif // _TMS320_F28377D
-	
+
+
+		//CAUTION!!!
+		//The clock mux controlled by this register is not glitch-free, 
+		//therefore the CPUSELx register must be configured before the PCLKCRx register.
+		//
+		CPUSELConfig();
+		GSxMSelConfig();
 #endif // CPU1
 
+		
 
-		objSysDrv.InitPeripheralClock();
+		InitPeripheralClock();
 
 
 
@@ -374,7 +384,7 @@ void	Class_SysDrv::Drv_InitPieCtrl(void)
 **********************************************************************************/
 void Class_SysDrv::InitPeripheralClock(void)
 {
-	//Enable Peripherials CLOCK
+	//Enable Peripherals CLOCK
 		EALLOW;
 
 		ClkCfgRegs.LOSPCP.all = 0x0002;		// SYSCLK/4
@@ -757,6 +767,31 @@ void	Class_SysDrv::Drv_InitPieVectTable(void)
 	PieCtrlRegs.PIEIER3.bit.INTx7 = 1;		// Enable EPWM7 Interrupt
 }
 
+
+/********************************************************
+Select peripheral for CPU
+********************************************************/
+
+void	Class_SysDrv::CPUSELConfig(void)
+{
+	DevCfgRegs.CPUSEL0.all = 0x03C0;	// PWM
+	DevCfgRegs.CPUSEL1.all = 0x0034;    // ECAP
+	DevCfgRegs.CPUSEL2.all = 0x0000;	// EQEP
+	DevCfgRegs.CPUSEL4.all = 0x0000;	// SD
+	DevCfgRegs.CPUSEL5.all = 0x0000;	// SCI
+	DevCfgRegs.CPUSEL6.all = 0x0000;	// SPI
+	DevCfgRegs.CPUSEL7.all = 0x0000;	// I2C
+	DevCfgRegs.CPUSEL8.all = 0x0000;	// ECAN
+	DevCfgRegs.CPUSEL9.all = 0x0000;	// McBSP
+	DevCfgRegs.CPUSEL11.all = 0x000C;	// ADC
+	DevCfgRegs.CPUSEL12.all = 0x0000;	// CMPSS
+	DevCfgRegs.CPUSEL14.all = 0x0000;	// DAC
+}
+
+void	Class_SysDrv::GSxMSelConfig(void)
+{
+	MemCfgRegs.GSxMSEL.all = 0x0000F800;
+}
 
 
 //===========================================================================

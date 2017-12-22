@@ -77,7 +77,7 @@ void	Class_PowCANScheduler::App_PowCANInit(void)
 void	Class_PowCANScheduler::App_Int_PrdTimer_Route(void)
 {
 	INT16	 i;
-	
+
 
 	//单机或 并机信号隔离态 或UPSTestMode
 //	if ( sUPSModeRun.bConfig != 3 || sParaMaint.bParaSignalMask == 1 || sFlagSystem.bUPSTestMode == 1 )
@@ -86,7 +86,7 @@ void	Class_PowCANScheduler::App_Int_PrdTimer_Route(void)
 //	}
 
 //  ECanbRegs.CANES.bit.BO == 1,表明CAN总线上存在一个异常错误率(当CANTEC达到256个限值时)，此时只能通过清除CANMC寄存器中的CCR位或者ABO位(Auto Bus Open)被设定，
-//  在收到128*11个接收位后退出，离开总线关闭状态，并且错误计数器(CANTEC)位被清除        
+//  在收到128*11个接收位后退出，离开总线关闭状态，并且错误计数器(CANTEC)位被清除
 
 	//总线busoff故障恢复
 	if ( ECanbRegs.CANES.bit.BO != 0 )
@@ -95,6 +95,7 @@ void	Class_PowCANScheduler::App_Int_PrdTimer_Route(void)
 		ECanbRegs.CANMC.bit.ABO = 1;
 		EDIS;
 	}
+
 
 	/*
 		By wxw20090714 PowerCan模块每2ms调用一次发送，
@@ -112,7 +113,7 @@ void	Class_PowCANScheduler::App_Int_PrdTimer_Route(void)
 					break;
 				case 1:
 					//By wxw20090724 30K模块PowerCan只传递逆变电流，因此系统处于逆变侧才调用
-					//20KPowerCan还需传递负载大小，因此需一直调用			
+					//20KPowerCan还需传递负载大小，因此需一直调用
 					if((objMonInterface.m_st_wUPSModeRun.bConfig == 3) && (objParallel.m_st_wParaMaint.bParaSignalMask != 1))
 					{
 						//By wxw20090714 先通过发送调度函数App_Int_Can_SendSchedule
@@ -122,7 +123,7 @@ void	Class_PowCANScheduler::App_Int_PrdTimer_Route(void)
 					}
 					break;
 				case 2:
-					if((objMonInterface.m_st_wUPSModeRun.bConfig == 3) 
+					if((objMonInterface.m_st_wUPSModeRun.bConfig == 3)
 					&& (objParallel.m_st_wParaMaint.bParaSignalMask != 1)
 					&& (objSystem.m_st_wFlagSystem.bAfterParamDly == 1)
 					&& (objDigitalIO.m_st_HardwareSignal.bRecOff == 0))
@@ -261,7 +262,7 @@ void Class_PowCANScheduler::Dat_Int_Can_Send(void)
 
 
 			//写数据
-				
+
 					pECanMboxes->MBOX11.MDL.word.LOW_WORD= objInverter.m_i16IinvaP_0;
 					pECanMboxes->MBOX11.MDL.word.HI_WORD = objInverter.m_i16IinvaQ_0;
 					pECanMboxes->MBOX11.MDH.word.LOW_WORD = objInverter.m_unIinvMdFilter_0.half.hword;
@@ -269,7 +270,7 @@ void Class_PowCANScheduler::Dat_Int_Can_Send(void)
 					m_i16InvaPSend = objInverter.m_i16IinvaP_0;
 					m_i16InvaQSend = objInverter.m_i16IinvaQ_0;
 					m_i16DCurrSend = objInverter.m_unIinvMdFilter_0.half.hword;
-				
+
 				break;
 
 
@@ -296,7 +297,7 @@ void Class_PowCANScheduler::Dat_Int_Can_Send(void)
 
 
 			//写数据
-				
+
 					pECanMboxes->MBOX11.MDL.word.LOW_WORD= objInverter.m_i16IinvbP_0;
 					pECanMboxes->MBOX11.MDL.word.HI_WORD = objInverter.m_i16IinvbQ_0;
 					pECanMboxes->MBOX11.MDH.word.LOW_WORD = objInverter.m_unIinvMdFilter_0.half.hword;
@@ -304,7 +305,7 @@ void Class_PowCANScheduler::Dat_Int_Can_Send(void)
 					objPowCANSched.m_i16InvbPSend = objInverter.m_i16IinvbP_0;
 					objPowCANSched.m_i16InvbQSend = objInverter.m_i16IinvbQ_0;
 					objPowCANSched.m_i16DCurrSend = objInverter.m_unIinvMdFilter_0.half.hword;
-				
+
 				break;
 
 
@@ -331,7 +332,7 @@ void Class_PowCANScheduler::Dat_Int_Can_Send(void)
 
 
 			//写数据
-				
+
 					pECanMboxes->MBOX11.MDL.word.LOW_WORD= objInverter.m_i16IinvcP_0;
 					pECanMboxes->MBOX11.MDL.word.HI_WORD = objInverter.m_i16IinvcQ_0;
 					pECanMboxes->MBOX11.MDH.word.LOW_WORD = objInverter.m_unIinvMdFilter_0.half.hword;
@@ -339,7 +340,7 @@ void Class_PowCANScheduler::Dat_Int_Can_Send(void)
 					objPowCANSched.m_i16InvcPSend = objInverter.m_i16IinvcP_0;
 					objPowCANSched.m_i16InvcQSend = objInverter.m_i16IinvcQ_0;
 					objPowCANSched.m_i16DCurrSend = objInverter.m_unIinvMdFilter_0.half.hword;
-				
+
 				break;
 
 
@@ -418,7 +419,7 @@ void Class_PowCANScheduler::Dat_Int_Can_Send(void)
 				PowCanParaInfoEntry.IlFilter[objDigitalIO.m_st_wHardwareNewSignal.bInvID].m_i16IlFilterb = objInverter.m_i16IlbFilter2_0;
 				PowCanParaInfoEntry.IlFilter[objDigitalIO.m_st_wHardwareNewSignal.bInvID].m_i16IlFilterc = objInverter.m_i16IlcFilter2_0;
 				break;
-				
+
 			default:
 				break;
 		}
@@ -544,7 +545,7 @@ UINT16 Class_PowCANScheduler::App_Int_Can_SendSchedule(void)
 				if(m_i16IabcShedule == 0)
 				{
 					i16SendId = SEND_IINVADQCURRENT;
-				}	
+				}
 				else if(m_i16IabcShedule == 1)
 				{
 					i16SendId = SEND_IINVBDQCURRENT;
@@ -589,7 +590,7 @@ void Class_PowCANScheduler::Dat_Can_LoadCalculation(void)
 
 	INT16 InvNum = 0;				//Inv开启台数
 	INT16 OnNum  = 0;				//Inv供电台数
-	
+
 	INT16 ChgOnNum  = 0;			//Charger开启台数
 	INT16 ChgPBoostNum  = 0;		//正Charger均充台数
 	INT16 BattDischgNum  = 0;		//电池放电预告警台数
@@ -631,7 +632,7 @@ void Class_PowCANScheduler::Dat_Can_LoadCalculation(void)
 	//加工状态标志
 	m_i16InvState = (objSwitches.m_st_FlagBreaker.bInv + (objSwitches.m_st_FlagBreaker.bOn<<1));
 	m_i16BattState = S2U(m_st_BatteryStatus);
-	
+
 	//更新本机数据
 	PowerCANParaLoadEntry.ParaLoadData[objDigitalIO.m_st_wHardwareNewSignal.bInvID].m_i16Pouta = m_i16PoutaSend;
 	PowerCANParaLoadEntry.ParaLoadData[objDigitalIO.m_st_wHardwareNewSignal.bInvID].m_i16Poutb = m_i16PoutbSend;;
@@ -666,7 +667,7 @@ void Class_PowCANScheduler::Dat_Can_LoadCalculation(void)
 				OnNum++;
 			}
 
-			
+
 			//共用电池组相关状态加工
 			if((PowerCANParaLoadEntry.SysFlag[i].BattFlag.tbits.bChargerWorkP == 1)
 			||(PowerCANParaLoadEntry.SysFlag[i].BattFlag.tbits.bChargerWorkN == 1))
@@ -755,7 +756,7 @@ void Class_PowCANScheduler::Dat_Can_LoadCalculation(void)
 			{
 				m_i16BattPreWarnTotal = 0;
 			}
-			
+
 			if(m_i16BattSelfTestTotalNum != 0)
 			{
 					m_i16BattSelfTestTotal = 1;
@@ -782,7 +783,7 @@ void Class_PowCANScheduler::Dat_Can_LoadCalculation(void)
 
 /* ***********************************************************
 函数名称：	void App_Can_ILFilter( void)
-功能描述：	
+功能描述：
 算法说明：
 入口参数：
 出口参数：
@@ -803,7 +804,7 @@ void Class_PowCANScheduler::App_Can_ILFilter(void)
 		{
 			if((PowerCANParaLoadEntry.DqCurrentValid.m_u16All& (1 << i)) != 0)
 			{
-	
+
 				i32ILaFilterSum += PowCanParaInfoEntry.IlFilter[i].m_i16IlFiltera;
 				i32ILbFilterSum += PowCanParaInfoEntry.IlFilter[i].m_i16IlFilterb;
 				i32ILcFilterSum += PowCanParaInfoEntry.IlFilter[i].m_i16IlFilterc;
@@ -827,11 +828,11 @@ void Class_PowCANScheduler::App_Can_ILFilter(void)
 	objInvAlg.m_i16IlaFilterShare_0 = PowCanParaInfoEntry.IlFilter[objDigitalIO.m_st_wHardwareNewSignal.bInvID].m_i16IlFiltera;
 	objInvAlg.m_i16IlbFilterShare_0 = PowCanParaInfoEntry.IlFilter[objDigitalIO.m_st_wHardwareNewSignal.bInvID].m_i16IlFilterb;
 	objInvAlg.m_i16IlcFilterShare_0 = PowCanParaInfoEntry.IlFilter[objDigitalIO.m_st_wHardwareNewSignal.bInvID].m_i16IlFilterc;
-}	
+}
 
 /* ***********************************************************
 函数名称：	void App_Can_IInvDQCal( void)
-功能描述：	
+功能描述：
 算法说明：
 入口参数：
 出口参数：
@@ -858,7 +859,7 @@ void Class_PowCANScheduler::App_Can_IInvDQCal(void)
 		{
 			if((PowerCANParaLoadEntry.DqCurrentValid.m_u16All& (1 << i)) != 0)
 			{
-	
+
 				i32IaPSum += m_i16PowerCanIaPM_0[i];
 				i32IaQSum += m_i16PowerCanIaQM_0[i];
 				i32IbPSum += m_i16PowerCanIbPM_0[i];
@@ -874,10 +875,10 @@ void Class_PowCANScheduler::App_Can_IInvDQCal(void)
 		}
 	}
 
-	
+
 	m_i16PowerCanOnlineNum = i16UpsOnlineNum;
 	m_i16PowerCanTotalNum = i16DqValidNum;
-	
+
 	if(i16DqValidNum != 0)
 	{
 		objInvAlg.m_i16IlaPAvg_0 = i32IaPSum / i16DqValidNum;
@@ -909,7 +910,7 @@ void Class_PowCANScheduler::App_Can_IInvDQCal(void)
 
 /* ***********************************************************
 函数名称：	void Alg_Int_MainInterfaceVar( void)
-功能描述：	
+功能描述：
 算法说明：
 入口参数：
 出口参数：
@@ -924,7 +925,7 @@ void Class_PowCANScheduler::Alg_Int_MainInterfaceVar(void)
 
 	for (i = 1; i < ParaNumCNST; i++)
 	{
-	
+
 		m_i16PowerCanIaPM_0[i] = PowCanParaInfoEntry.ParaDQCurrEntry[i].m_i16IINVAP;
 		m_i16PowerCanIaQM_0[i] = PowCanParaInfoEntry.ParaDQCurrEntry[i].m_i16IINVAQ;
 		m_i16PowerCanIbPM_0[i] = PowCanParaInfoEntry.ParaDQCurrEntry[i].m_i16IINVBP;
@@ -935,6 +936,3 @@ void Class_PowCANScheduler::Alg_Int_MainInterfaceVar(void)
 		m_i16PowerCanDcurr_0[i] = PowCanParaInfoEntry.ParaDQCurrEntry[i].m_i16DCurr;
 	}
 }
-
-
-

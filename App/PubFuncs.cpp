@@ -4,7 +4,6 @@
 //Class_Monitor				objMonitor;
 //Class_CAN					objCAN;
 
-INT16	i16_IntCnt_0;										//部分中断程序分三个分支进行,中断用计数器
 
 //Class_Settings				objSettings;
 Class_System				objSystem;
@@ -34,9 +33,10 @@ Class_FlashUpdate			objFlashUpdate;
 SysCanProtocol		ProtocolObj;
 SysCanApp			SysCanAppObj;
 //应用层消息处理对象
-SysCanDataExchg 		DataExchgObj;
+SysCanDataExchg 	DataExchgObj;
 
-//---------------------------------------
+//Inter Process Communication
+
 
 
 

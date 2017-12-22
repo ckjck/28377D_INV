@@ -221,32 +221,11 @@ void	Class_GPIODrv::Drv_GPIOInit()
     GpioCtrlRegs.GPCLOCK.all = lockValC;
     GpioCtrlRegs.GPDLOCK.all = lockValD;
     GpioCtrlRegs.GPELOCK.all = lockValE;
-
-	objGPIODrv.CPUSELConfig();
 	EDIS;
 
 }
 
 
-/********************************************************
-Select peripheral for CPU
-********************************************************/
-
-void	Class_GPIODrv::CPUSELConfig(void)
-{
-	DevCfgRegs.CPUSEL0.all = 0x03C0;	// PWM
-	DevCfgRegs.CPUSEL1.all = 0x0000;	// ECAP
-	DevCfgRegs.CPUSEL2.all = 0x0000;	// EQEP
-	DevCfgRegs.CPUSEL4.all = 0x0000;	// SD
-	DevCfgRegs.CPUSEL5.all = 0x0000;	// SCI
-	DevCfgRegs.CPUSEL6.all = 0x0000;	// SPI
-	DevCfgRegs.CPUSEL7.all = 0x0000;	// I2C
-	DevCfgRegs.CPUSEL8.all = 0x0000;	// ECAN
-	DevCfgRegs.CPUSEL9.all = 0x0000;	// McBSP
-	DevCfgRegs.CPUSEL11.all = 0x000C;	// ADC
-	DevCfgRegs.CPUSEL12.all = 0x0000;	// CMPSS
-	DevCfgRegs.CPUSEL14.all = 0x0000;	// DAC
-}
 
 #pragma CODE_SECTION("Epwm1Funcs");
 void 	Class_GPIODrv::Drv_Int_ADCh1Cs(void)

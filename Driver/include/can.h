@@ -335,10 +335,11 @@ tMsgObjType;
 
 #define CAN_IF2ARB_STD_ID_S         18
 #define CAN_IF2ARB_STD_ID_M         0x1FFC0000 // Standard Message Identifier
-/*
+
 //*****************************************************************************
 // API Function prototypes
 //*****************************************************************************
+/*
 extern void CANClkSourceSelect(uint32_t ui32Base, uint16_t  ucSource);
 extern void CANBitTimingGet(uint32_t ui32Base, tCANBitClkParms *pClkParms);
 extern void CANBitTimingSet(uint32_t ui32Base, tCANBitClkParms *pClkParms);

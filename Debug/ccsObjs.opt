@@ -1,1 +1,1 @@
-"./DSP2837xD_CodeStartBranch.obj" "./App/Inv.obj" "../F2837xD_Headers_nonBIOS_cpu1.cmd" "../TMS320F28377D_cpu01.cmd" -llibc.a 
+"./App/Inv.obj" "../F2837xD_Headers_nonBIOS_cpu1.cmd" "../TMS320F28377D_cpu01.cmd" -llibc.a 

@@ -259,6 +259,8 @@ class Class_SysDrv
 
 	private:
 		void	InitPeripheralClock(void);
+		void	CPUSELConfig(void);
+		void	GSxMSelConfig(void);
 		
 	};
 	

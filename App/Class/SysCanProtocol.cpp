@@ -383,12 +383,13 @@ SysCanRecvFcb-----将接收到的相应消息存到队列，由中断程序调用
 Parameters:              pUnused: unused
 Return Value: 
 Precondition: 
-Postcondition: 
+Postcondition: Dispatch receive message,
 ********************************************************************************/
 INT16 SysCanProtocol::SysCanRecvFcb(IN VOID *pFrame)
 {
 	m_CurRecvedFrame.Frame = *(SYS_CAN_FRAME *)pFrame; 
 
+	//RECEIVE INV MESSAGE
 	//only for this node or broadcast msg will be received
 	//if the received the all len of bytes is abnormal it will not be received
 	if (((objMonInterface.m_i16wSerialNumSet_0 == m_CurRecvedFrame.PackedMsg.b6DestinationMacId)
@@ -398,8 +399,16 @@ INT16 SysCanProtocol::SysCanRecvFcb(IN VOID *pFrame)
 	{
 		m_SysCanRecvQueue.InsQueue(m_CurRecvedFrame);
 	}
-	
-	//TBD
+
+	//RECEIVE RECMESSAGE
+	if 	((((objMonInterface.m_i16wSerialNumSet_0 + 0x10) == m_CurRecvedFrame.PackedMsg.b6DestinationMacId)
+		|| (m_CurRecvedFrame.PackedMsg.b6DestinationMacId == MAC_ID_BROADCAST))
+		&& (m_CurRecvedFrame.PackedMsg.u16Dlc >= 2) && (m_CurRecvedFrame.PackedMsg.u16Dlc <= 8))
+
+	{
+		objIPC.Dat_CanBustoCPU2(&m_CurRecvedFrame);
+	}
+
 	return 0;
 }
 
