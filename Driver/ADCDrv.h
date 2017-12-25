@@ -162,6 +162,7 @@ class Class_ADDrv
 
 		void			AdcSetMode(Uint16 adc, Uint16 resolution, Uint16 signalmode);
 		void			CalAdcINL(Uint16 adc);
+		void			AdcEocWaiting(void);
 	    
 	public:
 

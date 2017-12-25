@@ -393,11 +393,13 @@ void	Class_CANDrv::Drv_CANInit()
 		 case CANA_BASE:
 		 {
 			 ClkCfgRegs.CLKSRCCTL2.bit.CANABCLKSEL = ui16Source;
+			 break;
 		 }
 
 		 case CANB_BASE:
 		 {
 			 ClkCfgRegs.CLKSRCCTL2.bit.CANBBCLKSEL = ui16Source;
+			 break;
 		 }
 
 		 default:

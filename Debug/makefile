@@ -123,33 +123,33 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXE_OUTPUTS += \
-28377D.out \
+28377D_INV.out \
 
 EXE_OUTPUTS__QUOTED += \
-"28377D.out" \
+"28377D_INV.out" \
 
 BIN_OUTPUTS += \
-28377D.hex \
+28377D_INV.hex \
 
 BIN_OUTPUTS__QUOTED += \
-"28377D.hex" \
+"28377D_INV.hex" \
 
 
 # All Target
 all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
-	@$(MAKE) --no-print-directory -Onone "28377D.out"
+	@$(MAKE) --no-print-directory -Onone "28377D_INV.out"
 
 # Tool invocations
-28377D.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
+28377D_INV.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: C2000 Linker'
-	"D:/RatioSoft/ccsv7/ccsv7/tools/compiler/ti-cgt-c2000_16.9.5.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla1 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu2 -O2 --advice:performance=all --define=CPU1 -g --diag_warning=225 --diag_wrap=off --display_error_number -z -m"28377D.map" --stack_size=0x200 --warn_sections -i"D:/RatioSoft/ccsv7/ccsv7/tools/compiler/ti-cgt-c2000_16.9.5.LTS/lib" -i"D:/RatioSoft/ccsv7/ccsv7/tools/compiler/ti-cgt-c2000_16.9.5.LTS/include" --reread_libs --diag_wrap=off --display_error_number --xml_link_info="28377D_linkInfo.xml" --rom_model -o "28377D.out" $(ORDERED_OBJS)
+	"D:/RatioSoft/ccsv7/ccsv7/tools/compiler/ti-cgt-c2000_16.9.5.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla1 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu2 -O2 --advice:performance=all --define=CPU1 -g --diag_warning=225 --diag_wrap=off --display_error_number -z -m"28377D_INV.map" --stack_size=0x200 --warn_sections -i"D:/RatioSoft/ccsv7/ccsv7/tools/compiler/ti-cgt-c2000_16.9.5.LTS/lib" -i"D:/RatioSoft/ccsv7/ccsv7/tools/compiler/ti-cgt-c2000_16.9.5.LTS/include" --reread_libs --diag_wrap=off --display_error_number --xml_link_info="28377D_INV_linkInfo.xml" --rom_model -o "28377D_INV.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-28377D.hex: $(EXE_OUTPUTS)
+28377D_INV.hex: $(EXE_OUTPUTS)
 	@echo 'Invoking: C2000 Hex Utility'
-	"D:/RatioSoft/ccsv7/ccsv7/tools/compiler/ti-cgt-c2000_16.9.5.LTS/bin/hex2000"  -o "28377D.hex" $(EXE_OUTPUTS__QUOTED)
+	"D:/RatioSoft/ccsv7/ccsv7/tools/compiler/ti-cgt-c2000_16.9.5.LTS/bin/hex2000"  -o "28377D_INV.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $@'
 	@echo ' '
 

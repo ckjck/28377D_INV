@@ -22,19 +22,19 @@ Class_IPC::~Class_IPC(void)
 	delete	m_pClass_IPC;
 }
 */
-void    Class_IPC::Drv_IPC_ADSample_Receive(UINT16 &VbusP_0, UINT16 &VbusN_0)
+void    Class_IPC::Drv_IPC_ADSample_Receive(UINT16 & mutable_VbusP_0, UINT16 & mutable_VbusN_0)
 {
 
 	//receive Vbus_p Vbus_n from REC
-    this->IPC_DataRead(IPC_STS_IPC4, HWRE(VBUS_P_CPU2TOCPU1), VbusP_0);
-	this->IPC_DataRead(IPC_STS_IPC5, HWRE(VBUS_N_CPU2TOCPU1), VbusN_0);
+    this->IPC_DataRead(IPC_STS_IPC4, HWRE(VBUS_P_CPU2TOCPU1), mutable_VbusP_0);
+	this->IPC_DataRead(IPC_STS_IPC5, HWRE(VBUS_N_CPU2TOCPU1), mutable_VbusN_0);
 
 }
 
 //
 // transmit Vin_a Vin_b Vin_c of sample data to REC
 //
-void	Class_IPC::Drv_IPC_ADSample_Transmit(UINT16 &Vina_0, UINT16 &Vinb_0, UINT16 &Vinc_0)
+void	Class_IPC::Drv_IPC_ADSample_Transmit(const UINT16 & Vina_0, const UINT16 & Vinb_0, const UINT16 & Vinc_0)
 {
 
     this->IPC_DataWrite(IPC_FLAG_IPC3, HWRE(VIN_A_CPU1TOCPU2), Vina_0);
@@ -60,7 +60,7 @@ void Class_IPC::Drv_IPC_StateMessage(void)
 //
 //*****************************************************************************
 
-UINT16 Class_IPC::IPC_DataWrite(const UINT32 & ulFlag, UINT16 * const ulAddress, UINT16 & ulData)
+UINT16 Class_IPC::IPC_DataWrite(const UINT32 & ulFlag, UINT16 * const ulAddress, const UINT16 & ulData)
 {
     //
     // Return false ,if IPC Local to Remote flags are not clear,and not refresh MSGRAM's data
@@ -90,15 +90,15 @@ UINT16 Class_IPC::IPC_DataWrite(const UINT32 & ulFlag, UINT16 * const ulAddress,
  //! return status of command (0=success, 1=error)
  //
  //*****************************************************************************
- UINT16 Class_IPC::IPC_DataRead(const UINT32 & ulFlag, UINT16 * const ulAddress, UINT16 & ulData)
- {
+ UINT16 Class_IPC::IPC_DataRead(const UINT32 & ulFlag, UINT16 * const ulAddress, UINT16 & mutable_ulData)
      //
      // Check IPC Flag,if true,remote CPU already write message in *ulAddress
      //
+ {
      if (IpcRegs.IPCSTS.all & ulFlag)
      {
         //refresh data from remote CPU message
-         ulData = *ulAddress;
+         mutable_ulData = *ulAddress;
          //
          // acknowledge IPC flag
          //
@@ -116,32 +116,24 @@ UINT16 Class_IPC::IPC_DataWrite(const UINT32 & ulFlag, UINT16 * const ulAddress,
 
 
 //Receive message from CANBUS,Transmit to Rec
-void	Class_IPC::Dat_CanBustoCPU2(CAN_PACKED_PROTOCOL_U *message)
+void	Class_IPC::Dat_CanBustoCPU2(const CAN_PACKED_PROTOCOL_U * const mutable_message)
 {
     if(IpcRegs.IPCFLG.bit.IPC0 == 0)
 	{
-		*CanBustoCPU2 = *message;
+		*CanBustoCPU2_data = *mutable_message;
 		IpcRegs.IPCSET.bit.IPC0 = 1;
 	}
 }
 
 //Receive message from Rec,and transmit to CAN bus
-void Class_IPC::Dat_CPU2toCanBus(const UINT32 & IpcFlagStatus, const UINT32 & IpcFlag ,
-					const UINT32 & IpcSendCom, const UINT32 & IpcSendAddr, const UINT32 & IpcSendData)
-
+void Class_IPC::Dat_CPU2toCanBus(void)
 {
-	if(IpcRegs.IPCSTS.all && IpcFlagStatus)
+	//TBD CanaRegs.CAN_NDAT_21 & 0X0002 == 0X0002
+	if(IpcRegs.IPCSTS.bit.IPC0)
 	{
-		IpcRegs.IPCSENDCOM = IpcSendCom;
-		IpcRegs.IPCSENDADDR = IpcSendAddr;
-		IpcRegs.IPCSENDDATA = IpcSendData;
 
-		if(IpcRegs.IPCSTS.all && IpcFlag)
-		{
-
-			CanMailBoxWrite(MAIL_BOX2, &(CPU2toCanBus->Frame));
-			IpcRegs.IPCACK.all |= IpcFlag;
-		}
+		CanMailBoxWrite(MAIL_BOX2, &(CPU2toCanBus_data->Frame));
+		IpcRegs.IPCACK.bit.IPC0 = 1;
 	}
 
 }

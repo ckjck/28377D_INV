@@ -72,8 +72,8 @@ union IPC_Data
 class	Class_IPC
 	{
 	private:
-		UINT16		IPC_DataWrite(const UINT32 &ulFlag, UINT16 * const ulAddress, UINT16 &ulData);
-		UINT16		IPC_DataRead(const UINT32 &ulFlag, UINT16 * const ulAddress, UINT16 &ulData);
+		UINT16		IPC_DataWrite(const UINT32 &ulFlag, UINT16 * const ulAddress, const UINT16 &ulData);
+		UINT16		IPC_DataRead(const UINT32 &ulFlag, UINT16 * const ulAddress, UINT16 &mutable_ulData);
 
  		// IPCData of status message
 		union		IPC_Data		m_un_CPU1toCPU2;
@@ -81,24 +81,23 @@ class	Class_IPC
 
 		//static		Class_IPC		*m_pClass_IPC;
 		//
-    	CAN_PACKED_PROTOCOL_U   * const CPU2toCanBus;
-    	CAN_PACKED_PROTOCOL_U   * const CanBustoCPU2;
+    	CAN_PACKED_PROTOCOL_U   * const CPU2toCanBus_data;
+    	CAN_PACKED_PROTOCOL_U   * const CanBustoCPU2_data;
 
 	public:
 
 		// constructed function to initialize *CanBustoCPU2 and *CPU2toCanBus;
 	 	explicit 	Class_IPC(CAN_PACKED_PROTOCOL_U * const p1, CAN_PACKED_PROTOCOL_U * const p2)
-						: CPU2toCanBus(p1), CanBustoCPU2(p2){}
+						: CPU2toCanBus_data(p1), CanBustoCPU2_data(p2){}
 		//static		Class_IPC	*GetClass_IPCPtr(void);
 		// transmit and receive some ADsample DATA
-		void		Drv_IPC_ADSample_Transmit(UINT16 & Vina_0, UINT16 & Vinb_0, UINT16 & Vinc_0);
-		void		Drv_IPC_ADSample_Receive(UINT16 & VbusP_0, UINT16 & VbusN_0);
+		void		Drv_IPC_ADSample_Transmit(const UINT16 & Vina_0, const UINT16 & Vinb_0, const UINT16 & Vinc_0);
+		void		Drv_IPC_ADSample_Receive(UINT16 & mutable_VbusP_0, UINT16 & mutable_VbusN_0);
 
 		void		Drv_IPC_StateMessage(void);
 
-		void		Dat_CanBustoCPU2(CAN_PACKED_PROTOCOL_U *message);
-		void		Dat_CPU2toCanBus(const UINT32 & IpcFlagStatus, const UINT32 & IpcFlag,
-						const UINT32 & IpcSendCom, const UINT32 & IpcSendAddr, const UINT32 & IpcSendData);
+		void		Dat_CanBustoCPU2(const CAN_PACKED_PROTOCOL_U * const mutable_message);
+		void		Dat_CPU2toCanBus(void);
 
 		//virtual		~Class_IPC(void);
 };

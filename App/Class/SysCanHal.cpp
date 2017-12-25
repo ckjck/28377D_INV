@@ -196,6 +196,9 @@ interrupt void ECAN0INTA_ISR(VOID)
 	static UINT32 g_bErrFlag = 0;
 	UINT32	Mbox_ID;
 	UINT32	ulStatus;
+	Class_CANDrv	&objCanDrv = objCANDrv;
+	Class_IPC	&objIPCDrv = objIPC;
+	SysCanProtocol	 &objProtocol = ProtocolObj;
 
 	CloseSysCanInt();
 	asm(" NOP");
@@ -204,43 +207,43 @@ interrupt void ECAN0INTA_ISR(VOID)
 	//
 	// Read the CAN interrupt status to find the cause of the interrupt(mailbox1~32)
 	//
-	Mbox_ID = objCANDrv.CANIntStatus(CANA_BASE, CAN_INT_STS_CAUSE);
+	Mbox_ID = objCanDrv.CANIntStatus(CANA_BASE, CAN_INT_STS_CAUSE);
 	switch(Mbox_ID)
 		{
 			case MAIL_BOX1:	//INV message Transmit
 
-				ProtocolObj.SysCanXmitFcb(NULL);
-				objCANDrv.CANIntClear(CANA_BASE, MAIL_BOX1);
+				objProtocol.SysCanXmitFcb(NULL);
+				objCanDrv.CANIntClear(CANA_BASE, MAIL_BOX1);
 				break;
 			case MAIL_BOX2:	//REC message transmit
-				objIPC.Dat_CPU2toCanBus(IPC_STS_IPC1, IPC_STS_IPC2, IPCSENDCOM_CANDATA, IPCSENDADDR_CANDATA, IPCSENDDATA_CANDATA);
-				objCANDrv.CANIntClear(CANA_BASE, MAIL_BOX2);
+				objIPCDrv.Dat_CPU2toCanBus();
+				objCanDrv.CANIntClear(CANA_BASE, MAIL_BOX2);
 			case MAIL_BOX5:
 
 				//fetch message from mailbox.
-				objCANDrv.CANMessageGet(CANA_BASE, MAIL_BOX5, &sRXCANMessage, true);
+				objCanDrv.CANMessageGet(CANA_BASE, MAIL_BOX5, &sRXCANMessage, true);
 
 				CanMailBoxRead(&ReceiveFrame, &sRXCANMessage);
 				ReceiveFrame.CANErrorStatus = CAN_STATUS_ERROR_ACTIVE;
 				if (0 != ReceiveFrame.CANId)
 				{
-					ProtocolObj.SysCanRecvFcb(&ReceiveFrame);
+					objProtocol.SysCanRecvFcb(&ReceiveFrame);
 				}
-				objCANDrv.CANIntClear(CANA_BASE, MAIL_BOX5);
+				objCanDrv.CANIntClear(CANA_BASE, MAIL_BOX5);
 				break;
 
 			case MAIL_BOX4:
 
 				//fetch message from mailbox
-				objCANDrv.CANMessageGet(CANA_BASE, MAIL_BOX4, &sRXCANMessage, true);
+				objCanDrv.CANMessageGet(CANA_BASE, MAIL_BOX4, &sRXCANMessage, true);
 
 				CanMailBoxRead(&ReceiveFrame, &sRXCANMessage);
 				ReceiveFrame.CANErrorStatus = CAN_STATUS_ERROR_ACTIVE;
 				if (0 != ReceiveFrame.CANId)
 				{
-					ProtocolObj.SysCanRecvFcb(&ReceiveFrame);
+					objProtocol.SysCanRecvFcb(&ReceiveFrame);
 				}
-				objCANDrv.CANIntClear(CANA_BASE, MAIL_BOX4);
+				objCanDrv.CANIntClear(CANA_BASE, MAIL_BOX4);
 				break;
 
 			//Process Error
@@ -255,7 +258,7 @@ interrupt void ECAN0INTA_ISR(VOID)
         		// present, then errors will occur and will be indicated in the
         		// controller status.
         		//
-        		ulStatus = objCANDrv.CANStatusGet(CANA_BASE, CAN_STS_CONTROL);
+        		ulStatus = objCanDrv.CANStatusGet(CANA_BASE, CAN_STS_CONTROL);
 
         		//
         		//Check to see if an error occurred.
@@ -276,7 +279,7 @@ interrupt void ECAN0INTA_ISR(VOID)
 				break;
 		}//End switch case
 
-	objCANDrv.CANGlobalIntClear(CANA_BASE, CAN_GLB_INT_CANINT0);
+	objCanDrv.CANGlobalIntClear(CANA_BASE, CAN_GLB_INT_CANINT0);
 	PieCtrlRegs.PIEACK.all |= 0x100;  		// Issue PIE ack
 	OpenSysCanInt();
 

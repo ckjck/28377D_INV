@@ -1,3 +1,0 @@
----- pCanIsrXmitFcb Matches (2 in 1 files) ----
-SysCanHal.cpp (App\Class) line 37 : 	CommandBase *pCanIsrXmitFcb;
-SysCanFcbRegister in SysCanHal.cpp (App\Class) : 	pCanIsrXmitFcb = pXmitCallBack;

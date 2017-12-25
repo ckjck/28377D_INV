@@ -387,6 +387,7 @@ Postcondition: Dispatch receive message,
 ********************************************************************************/
 INT16 SysCanProtocol::SysCanRecvFcb(IN VOID *pFrame)
 {
+	Class_IPC &objIPCDrv = objIPC;
 	m_CurRecvedFrame.Frame = *(SYS_CAN_FRAME *)pFrame; 
 
 	//RECEIVE INV MESSAGE
@@ -406,7 +407,7 @@ INT16 SysCanProtocol::SysCanRecvFcb(IN VOID *pFrame)
 		&& (m_CurRecvedFrame.PackedMsg.u16Dlc >= 2) && (m_CurRecvedFrame.PackedMsg.u16Dlc <= 8))
 
 	{
-		objIPC.Dat_CanBustoCPU2(&m_CurRecvedFrame);
+		objIPCDrv.Dat_CanBustoCPU2(&m_CurRecvedFrame);
 	}
 
 	return 0;

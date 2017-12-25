@@ -25,52 +25,35 @@ void 	Class_ADDrv::Drv_ADAdjust(void)
 void 	Class_ADDrv::Drv_ADInit(void)
 {
 	EALLOW;
-
+#ifdef	CPU1
 	//write configurations
 	AdcaRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4
 	AdcbRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4
-	AdccRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4
-	AdcdRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4
 
-    objADDrv.AdcSetMode(ADC_ADCA, ADC_RESOLUTION_12BIT, ADC_SIGNALMODE_SINGLE);
-    objADDrv.AdcSetMode(ADC_ADCB, ADC_RESOLUTION_12BIT, ADC_SIGNALMODE_SINGLE);
-    objADDrv.AdcSetMode(ADC_ADCC, ADC_RESOLUTION_12BIT, ADC_SIGNALMODE_SINGLE);
-    objADDrv.AdcSetMode(ADC_ADCD, ADC_RESOLUTION_12BIT, ADC_SIGNALMODE_SINGLE);
 
+    AdcSetMode(ADC_ADCA, ADC_RESOLUTION_12BIT, ADC_SIGNALMODE_SINGLE);
+    AdcSetMode(ADC_ADCB, ADC_RESOLUTION_12BIT, ADC_SIGNALMODE_SINGLE);
 
 	//power up the ADC
 	AdcaRegs.ADCCTL1.bit.ADCPWDNZ = 1;
 	AdcbRegs.ADCCTL1.bit.ADCPWDNZ = 1;
-	AdccRegs.ADCCTL1.bit.ADCPWDNZ = 1;
-	AdcdRegs.ADCCTL1.bit.ADCPWDNZ = 1;
 	//delay for 1ms to allow ADC time to power up
 	objTimerDrv.Drv_usDelay(1000);
-
+	
 	AdcaRegs.ADCINTSEL1N2.bit.INT1CONT = 0;// Disable continuous sampling for ADCINT1
 	AdcbRegs.ADCINTSEL1N2.bit.INT1CONT = 0;// Disable continuous sampling for ADCINT1
-	AdccRegs.ADCINTSEL1N2.bit.INT1CONT = 0;// Disable continuous sampling for ADCINT1
-	AdcdRegs.ADCINTSEL1N2.bit.INT1CONT = 0;// Disable continuous sampling for ADCINT1
 
-    AdcaRegs.ADCCTL1.bit.INTPULSEPOS = 1; //ADCINTs Trigger at end of conversion
+	AdcaRegs.ADCCTL1.bit.INTPULSEPOS = 1; //ADCINTs Trigger at end of conversion
     AdcbRegs.ADCCTL1.bit.INTPULSEPOS = 1;
-	AdccRegs.ADCCTL1.bit.INTPULSEPOS = 1;
-	AdcdRegs.ADCCTL1.bit.INTPULSEPOS = 1;
 
 	AdcaRegs.ADCINTSEL1N2.bit.INT1SEL = EOC5; //end of EOC5 will set INT1 interrupt flag
 	AdcbRegs.ADCINTSEL1N2.bit.INT1SEL = EOC3; //end of EOC3 will set INT1 interrupt flag
-	AdccRegs.ADCINTSEL1N2.bit.INT1SEL = EOC4; //end of EOC4 will set INT1 interrupt flag
-	AdcdRegs.ADCINTSEL1N2.bit.INT1SEL = EOC4; //end of EOC4 will set INT1 interrupt flag
-	
-    AdcaRegs.ADCINTSEL1N2.bit.INT1E = 1;   //enable INT1 Interrupt
-    AdcbRegs.ADCINTSEL1N2.bit.INT1E = 1;   //enable INT1 Interrupt
-    AdccRegs.ADCINTSEL1N2.bit.INT1E = 1;   //enable INT1 Interrupt
-    AdcdRegs.ADCINTSEL1N2.bit.INT1E = 1;   //enable INT1 Interrupt
-    
-    AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //make sure INT1 flag is cleared
-    AdcbRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //make sure INT1 flag is cleared
-    AdccRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //make sure INT1 flag is cleared
-    AdcdRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //make sure INT1 flag is cleared
 
+	AdcaRegs.ADCINTSEL1N2.bit.INT1E = 1;   //enable INT1 Interrupt
+    AdcbRegs.ADCINTSEL1N2.bit.INT1E = 1;   //enable INT1 Interrupt
+
+	AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //make sure INT1 flag is cleared
+    AdcbRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //make sure INT1 flag is cleared
 
 	//for 28377D£¬ 20 ADC acitve channel £¬ADCA A0-A5£¬ADCB B0-B3 ADCC C2-C4 ADCD D0-D4 ADCIN14£¬
 	//ADCIN15 for any¡£ to save time£¬ ADCC will sample them¡£
@@ -84,18 +67,6 @@ void 	Class_ADDrv::Drv_ADInit(void)
 	AdcbRegs.ADCSOC1CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
 	AdcbRegs.ADCSOC2CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
 	AdcbRegs.ADCSOC3CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
-	AdccRegs.ADCSOC0CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
-	AdccRegs.ADCSOC1CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
-	AdccRegs.ADCSOC2CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
-	AdccRegs.ADCSOC3CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
-	AdccRegs.ADCSOC4CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
-	AdcdRegs.ADCSOC0CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
-	AdcdRegs.ADCSOC1CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
-	AdcdRegs.ADCSOC2CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
-	AdcdRegs.ADCSOC3CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
-	AdcdRegs.ADCSOC4CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
-
-	
 
 	//SOC TRIGGER SOURCE SELECT
 	AdcaRegs.ADCSOC0CTL.bit.TRIGSEL  = SOFTWARE_TRIG;
@@ -108,16 +79,6 @@ void 	Class_ADDrv::Drv_ADInit(void)
 	AdcbRegs.ADCSOC1CTL.bit.TRIGSEL  = SOFTWARE_TRIG;
 	AdcbRegs.ADCSOC2CTL.bit.TRIGSEL  = SOFTWARE_TRIG;
 	AdcbRegs.ADCSOC3CTL.bit.TRIGSEL  = SOFTWARE_TRIG;
-	AdccRegs.ADCSOC0CTL.bit.TRIGSEL =  SOFTWARE_TRIG;
-	AdccRegs.ADCSOC1CTL.bit.TRIGSEL =  SOFTWARE_TRIG;
-	AdccRegs.ADCSOC2CTL.bit.TRIGSEL =  SOFTWARE_TRIG;
-	AdccRegs.ADCSOC3CTL.bit.TRIGSEL =  SOFTWARE_TRIG;
-	AdccRegs.ADCSOC4CTL.bit.TRIGSEL =  SOFTWARE_TRIG;
-	AdcdRegs.ADCSOC0CTL.bit.TRIGSEL  = SOFTWARE_TRIG;
-	AdcdRegs.ADCSOC1CTL.bit.TRIGSEL  = SOFTWARE_TRIG;
-	AdcdRegs.ADCSOC2CTL.bit.TRIGSEL  = SOFTWARE_TRIG;
-	AdcdRegs.ADCSOC3CTL.bit.TRIGSEL  = SOFTWARE_TRIG;
-	AdcdRegs.ADCSOC4CTL.bit.TRIGSEL  = SOFTWARE_TRIG;
 
 	//SOC CHANNEL SELECT
 	AdcaRegs.ADCSOC0CTL.bit.CHSEL = 0;
@@ -133,6 +94,61 @@ void 	Class_ADDrv::Drv_ADInit(void)
 	AdcbRegs.ADCSOC3CTL.bit.CHSEL = 3;
 	AdcbRegs.ADCSOC0CTL.bit.CHSEL = 14;
 	AdcbRegs.ADCSOC1CTL.bit.CHSEL = 15;
+#endif
+
+#ifdef	CPU2
+	AdccRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4
+	AdcdRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4
+    AdcSetMode(ADC_ADCC, ADC_RESOLUTION_12BIT, ADC_SIGNALMODE_SINGLE);
+    AdcSetMode(ADC_ADCD, ADC_RESOLUTION_12BIT, ADC_SIGNALMODE_SINGLE);
+
+	//power up the ADC
+	AdccRegs.ADCCTL1.bit.ADCPWDNZ = 1;
+	AdcdRegs.ADCCTL1.bit.ADCPWDNZ = 1;
+	//delay for 1ms to allow ADC time to power up
+	objTimerDrv.Drv_usDelay(1000);
+
+	AdccRegs.ADCINTSEL1N2.bit.INT1CONT = 0;// Disable continuous sampling for ADCINT1
+	AdcdRegs.ADCINTSEL1N2.bit.INT1CONT = 0;// Disable continuous sampling for ADCINT1
+
+	AdccRegs.ADCCTL1.bit.INTPULSEPOS = 1;
+	AdcdRegs.ADCCTL1.bit.INTPULSEPOS = 1;
+
+	AdccRegs.ADCINTSEL1N2.bit.INT1SEL = EOC4; //end of EOC4 will set INT1 interrupt flag
+	AdcdRegs.ADCINTSEL1N2.bit.INT1SEL = EOC4; //end of EOC4 will set INT1 interrupt flag
+	
+    AdccRegs.ADCINTSEL1N2.bit.INT1E = 1;   //enable INT1 Interrupt
+    AdcdRegs.ADCINTSEL1N2.bit.INT1E = 1;   //enable INT1 Interrupt
+    
+    AdccRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //make sure INT1 flag is cleared
+    AdcdRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //make sure INT1 flag is cleared
+    
+	//for 28377D£¬ 20 ADC acitve channel £¬ADCA A0-A5£¬ADCB B0-B3 ADCC C2-C4 ADCD D0-D4 ADCIN14£¬
+	//ADCIN15 for any¡£ to save time£¬ ADCC will sample them¡£
+	AdccRegs.ADCSOC0CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
+	AdccRegs.ADCSOC1CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
+	AdccRegs.ADCSOC2CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
+	AdccRegs.ADCSOC3CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
+	AdccRegs.ADCSOC4CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
+	AdcdRegs.ADCSOC0CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
+	AdcdRegs.ADCSOC1CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
+	AdcdRegs.ADCSOC2CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
+	AdcdRegs.ADCSOC3CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
+	AdcdRegs.ADCSOC4CTL.bit.ACQPS = 25; // minimum acquisition window£¬75ns
+
+	//SOC TRIGGER SOURCE SELECT
+	AdccRegs.ADCSOC0CTL.bit.TRIGSEL =  SOFTWARE_TRIG;
+	AdccRegs.ADCSOC1CTL.bit.TRIGSEL =  SOFTWARE_TRIG;
+	AdccRegs.ADCSOC2CTL.bit.TRIGSEL =  SOFTWARE_TRIG;
+	AdccRegs.ADCSOC3CTL.bit.TRIGSEL =  SOFTWARE_TRIG;
+	AdccRegs.ADCSOC4CTL.bit.TRIGSEL =  SOFTWARE_TRIG;
+	AdcdRegs.ADCSOC0CTL.bit.TRIGSEL  = SOFTWARE_TRIG;
+	AdcdRegs.ADCSOC1CTL.bit.TRIGSEL  = SOFTWARE_TRIG;
+	AdcdRegs.ADCSOC2CTL.bit.TRIGSEL  = SOFTWARE_TRIG;
+	AdcdRegs.ADCSOC3CTL.bit.TRIGSEL  = SOFTWARE_TRIG;
+	AdcdRegs.ADCSOC4CTL.bit.TRIGSEL  = SOFTWARE_TRIG;
+
+	//SOC CHANNEL SELECT
 	
 	AdccRegs.ADCSOC2CTL.bit.CHSEL = 2;
 	AdccRegs.ADCSOC3CTL.bit.CHSEL = 3;
@@ -143,8 +159,7 @@ void 	Class_ADDrv::Drv_ADInit(void)
 	AdcdRegs.ADCSOC2CTL.bit.CHSEL = 2;
 	AdcdRegs.ADCSOC3CTL.bit.CHSEL = 3;
 	AdcdRegs.ADCSOC4CTL.bit.CHSEL = 4;
-
-
+#endif
 	EDIS;
 
 }
@@ -156,7 +171,7 @@ void	Class_ADDrv::AdcSetMode(Uint16 adc, Uint16 resolution, Uint16 signalmode)
 	Uint16 adcOffsetTrim; //temporary ADC offset trim
 	
 	//re-populate INL trim
-	objADDrv.CalAdcINL(adc);
+	CalAdcINL(adc);
 	
 	if(0xFFFF != *((Uint16*)GetAdcOffsetTrimOTP))
 	{
@@ -297,23 +312,18 @@ void Class_ADDrv::CalAdcINL(Uint16 adc)
 
 void 	Class_ADDrv::Drv_Int_Sampling1Data(void)
 {
-    UINT i, j;
+    UINT16 i, j;
+	Class_IPC  	&objIPCDrv = objIPC;
 
+	//receive Vbus Data from Rec,
+	objIPCDrv.Drv_IPC_ADSample_Receive(i, j);
+	m_i16ADC_VbusP_0 = (INT16)i;
+	m_i16ADC_VbusN_0 = (INT16)j;
 	//
     //wait for ADCA-SOCD to complete, then acknowledge flag
     //
-    while(AdcaRegs.ADCINTFLG.bit.ADCINT1 == 0);
-	while(AdcbRegs.ADCINTFLG.bit.ADCINT1 == 0);
-	while(AdccRegs.ADCINTFLG.bit.ADCINT1 == 0);
-	while(AdcdRegs.ADCINTFLG.bit.ADCINT1 == 0);
-    AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
-    AdcbRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
-	AdcbRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
-	AdcdRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
+	AdcEocWaiting();
 
-	
-	volatile INT16	i16IntAx_0;
-	
 	m_i16ADC_Ila_0 = AdcaResultRegs.ADCRESULT0;
 	m_i16ADC_Ilb_0 = AdcaResultRegs.ADCRESULT1;
 	m_i16ADC_Ilc_0 = AdcaResultRegs.ADCRESULT2;
@@ -330,10 +340,7 @@ void 	Class_ADDrv::Drv_Int_Sampling1Data(void)
 	m_i16ADC_Vbpb_0 = AdcbResultRegs.ADCRESULT4;
 	m_i16ADC_Vbpc_0 = AdcbResultRegs.ADCRESULT5;
 	
-	//receive Vbus Data from Rec,
-	objIPC.Drv_IPC_ADSample_Receive(i, j);
-	m_i16ADC_VbusP_0 = (INT16)i;
-	m_i16ADC_VbusN_0 = (INT16)j;
+	
 
 	m_i16ADC_Ila_0 = (((INT32)m_i16ADCSlope)*(m_i16ADC_Ila_0-m_unAdIlaMid.half.hword))>>12;
 	m_i16ADC_Ilb_0 = (((INT32)m_i16ADCSlope)*(m_i16ADC_Ilb_0-m_unAdIlbMid.half.hword))>>12;
@@ -372,21 +379,13 @@ void 	Class_ADDrv::Drv_Int_Sampling1Data(void)
 
 void 	Class_ADDrv::Drv_Int_Sampling2Data(void)
 {	
-    UINT i, j, k;
+    UINT16 i, j, k;
+	Class_IPC	&objIPCDrv = objIPC;
+	volatile INT16	i16IntAx_0;
     //
     //wait for ADCA-SOCD to complete, then acknowledge flag
     //
-    while(AdcaRegs.ADCINTFLG.bit.ADCINT1 == 0);
-	while(AdcbRegs.ADCINTFLG.bit.ADCINT1 == 0);
-	while(AdccRegs.ADCINTFLG.bit.ADCINT1 == 0);
-	while(AdcdRegs.ADCINTFLG.bit.ADCINT1 == 0);
-    AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
-    AdcbRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
-	AdcbRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
-	AdcdRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
-
-		
-	volatile INT16	i16IntAx_0;
+   	AdcEocWaiting();
 
 	m_i16ADC_IlaFilter_0 = AdcaResultRegs.ADCRESULT0;
 	m_i16ADC_IlbFilter_0 = AdcaResultRegs.ADCRESULT1;
@@ -409,7 +408,7 @@ void 	Class_ADDrv::Drv_Int_Sampling2Data(void)
 	i = (UINT16)m_i16ADC_Vina_0;
 	j = (UINT16)m_i16ADC_Vinb_0;
 	k = (UINT16)m_i16ADC_Vinc_0;
-	objIPC.Drv_IPC_ADSample_Transmit(i, j, k);
+	objIPCDrv.Drv_IPC_ADSample_Transmit(i, j, k);
 	
 	m_i16ADC_IlaFilter_0 = (((INT32)m_i16ADCSlope)*(m_i16ADC_IlaFilter_0-m_unAdIlaFilterMid.half.hword))>>12;
 	m_i16ADC_IlbFilter_0 = (((INT32)m_i16ADCSlope)*(m_i16ADC_IlbFilter_0-m_unAdIlbFilterMid.half.hword))>>12;
@@ -428,19 +427,39 @@ void 	Class_ADDrv::Drv_Int_Sampling2Data(void)
 void Class_ADDrv::Drv_AD_SOC(void)
 {
 	//Set SOC0 is highest round robin priority
+#ifdef CPU1
 	AdcaRegs.ADCSOCPRICTL.bit.RRPOINTER = 0x10;
 	AdcbRegs.ADCSOCPRICTL.bit.RRPOINTER = 0x10;
-	AdccRegs.ADCSOCPRICTL.bit.RRPOINTER = 0x10;
-	AdcdRegs.ADCSOCPRICTL.bit.RRPOINTER = 0x10;
-	
 	AdcaRegs.ADCSOCFRC1.all = 0x003F;
 	AdcbRegs.ADCSOCFRC1.all = 0x000F;
+#endif
+
+#ifdef CPU2
+	AdccRegs.ADCSOCPRICTL.bit.RRPOINTER = 0x10;
+	AdcdRegs.ADCSOCPRICTL.bit.RRPOINTER = 0x10;
 	AdccRegs.ADCSOCFRC1.all = 0x001F;
 	AdcdRegs.ADCSOCFRC1.all = 0x001F;
+#endif
 
 }
 
+void	Class_ADDrv::AdcEocWaiting(void)
+{
+	#ifdef	CPU1
+		while(AdcaRegs.ADCINTFLG.bit.ADCINT1 == 0);
+		while(AdcbRegs.ADCINTFLG.bit.ADCINT1 == 0);
+		AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
+		AdcbRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
+	#endif
+		
+	#ifdef CPU2
+		while(AdccRegs.ADCINTFLG.bit.ADCINT1 == 0);
+		while(AdcdRegs.ADCINTFLG.bit.ADCINT1 == 0);
+		AdcbRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
+		AdcdRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
+	#endif
 
+}
 //===========================================================================
 // End of file.
 //===========================================================================

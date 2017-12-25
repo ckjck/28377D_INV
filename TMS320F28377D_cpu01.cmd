@@ -92,7 +92,7 @@ SECTIONS
     .binit              : > PROG    PAGE = 0
     .pinit              : > PROG    PAGE = 0
     .text               : > PROG    PAGE = 0
-    codestart           : > PROG   PAGE = 0
+    codestart           : > BEGIN   PAGE = 0
     ramfuncs            : LOAD = PROG   PAGE = 0
                           RUN  = LS05SARAM  PAGE = 1
                           LOAD_START(_RamfuncsLoadStart),
