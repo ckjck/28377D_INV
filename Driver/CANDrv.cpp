@@ -314,7 +314,7 @@ void	Class_CANDrv::Drv_CANInit()
 	 }
 
 	 // Acknowledge any pending status interrupts.
-	 HWREG(ui32Base + CAN_O_ES);
+	 HWREG(ui32Base + CAN_O_ES) |= 0x18;
  }
 
  //*****************************************************************************
@@ -918,7 +918,7 @@ void	Class_CANDrv::Drv_CANInit()
 	 if(ui32IntClr == CAN_INT_INT0ID_STATUS)
 	 {
 		 // Simply read and discard the status to clear the interrupt.
-		 HWREG(ui32Base + CAN_O_ES);
+		 //HWREG(ui32Base + CAN_O_ES);
 	 }
 	 else
 	 {
